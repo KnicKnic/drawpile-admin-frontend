@@ -2,6 +2,16 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
+## How to use
+
+The easiest way to use this project is to use the already hosted version at https://knicknic.github.io/drawpile-admin . This page however expects specific naming patterns.
+* [some_domain or ip:port]/ -> https://knicknic.github.io/drawpile-admin 
+* [some_domain or ip:port]/rpc/ -> yourdrawpile server
+
+I use [traefik](https://traefik.io) to accomplish this redirection. I use [duckdns](https://www.duckdns.org) to have free domains/subdomains (useful if you want to access over the internet). [Traefik](https://traefik.io) has built in plugins to get certificates for https from [letsencrypt](https://letsencrypt.org).
+
+**See example in [./traefik](./traefik)**
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

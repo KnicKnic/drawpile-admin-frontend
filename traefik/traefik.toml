@@ -1,0 +1,64 @@
+# debug = true
+
+#expose entry points
+defaultEntryPoints = ["http"]
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+## Use this section instead if you are exposing on the internet (you will need to setup HTTPS & certificates)
+#defaultEntryPoints = ["https","http"]
+#[entryPoints]
+  # [entryPoints.http_redirect]
+  # address = ":80"
+  #   [entryPoints.http_redirect.redirect]
+  #   entryPoint = "https"
+
+
+[file]
+watch=true
+
+[backends]
+
+  [backends.drawpile-rpc]
+    [backends.drawpile-rpc.servers]
+      [backends.drawpile-rpc.servers.server1]
+#you will want to change this url & port to whatever your drawpile server is on
+        url = "http://drawpile-rpc:7777"
+
+  [backends.drawpileadmingui-production]
+    [backends.drawpileadmingui-production.servers]
+      [backends.drawpileadmingui-production.servers.server1]
+#note the url does not contain /drawpile-admin , we add that later
+        url = "https://knicknic.github.io"
+
+[frontends]
+  [frontends.drawpileadmin]
+#priority 10 is less than 20, so this rule gets matched only if other one doesn't
+    priority = 10
+    backend = "drawpileadmingui-production"
+#use a different username password than is provided here (which is username: test, password: test)
+#http://aspirine.org/htpasswd_en.html fill out (1. Users and passwords) with content 
+#test test
+#go to (2. Generated htpasswd file) and click "Generate htpasswd content"
+#replace output below
+#
+# if you use the password on the drawpile srv, then make sure to use the same one
+# Also make sure to update the 2nd basicAuth section
+    basicAuth = [
+       "test:$apr1$71lnBZLg$R8npQ9XocED.pduy5ytFz0",
+    ]
+      [frontends.drawpileadmin.routes.drawpileadmin]
+#this is where we add the suffix https://knicknic.github.io
+        rule = "AddPrefix:/drawpile-admin/"
+
+  [frontends.drawpile-rpc]
+    backend = "drawpile-rpc"
+    priority = 20
+#make sure passwd matches previous password
+#if you specify the password in your drawpile server, then remove the basicAuth = [..] below
+    basicAuth = [
+       "test:$apr1$71lnBZLg$R8npQ9XocED.pduy5ytFz0",
+    ]
+      [frontends.drawpile-rpc.routes.drawpile-rpc]
+        rule = "PathPrefixStrip:/rpc"
