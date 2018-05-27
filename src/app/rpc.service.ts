@@ -291,6 +291,9 @@ export class RpcService {
   getSessions(successCallback: (message: SessionMessage[]) => void) {
     this.makeRpcGetCall(successCallback, 'rpc/sessions');
   }
+  messageSessions(message: String) {    
+    this.makeRpcUpdateCall((isSuccess) => {}, 'rpc/sessions', {"message": message}, "Sent message");
+  }
   getStatus(successCallback: (message: StatusMessage) => void) {
     this.makeRpcGetCall(successCallback, 'rpc/status');
   }

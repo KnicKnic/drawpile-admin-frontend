@@ -34,4 +34,10 @@ export class SessionsComponent implements OnInit {
     this.refreshData();
   }
 
+  messageAll(){
+    var message = prompt("Message to send to everyone", "");
+    if (message != null) {
+        this.rpcService.messageSessions(message);
+    }
+  }
 }
