@@ -1,0 +1,53 @@
+<h3> Sessions </h3>
+
+<div class="well well-lg" *ngIf="selectedRow !== null">
+  To edit id:
+  <strong>{{sessions[selectedRow].id}}</strong>, title:
+  <strong>{{sessions[selectedRow].title}}</strong> click here.
+</div>
+<div class="well well-lg" *ngIf="selectedRow === null">
+  <BR>
+</div>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <!-- <th scope="col" *ngFor="let key of keys">{{ key }}</th> -->
+      <th scope="col">id</th>
+      <th scope="col">title</th>
+      <th scope="col">users</th>
+      <th scope="col">alias</th>
+      <th scope="col">authOnly</th>
+      <th scope="col">closed</th>
+      <th scope="col">founder</th>
+      <th scope="col">password</th>
+      <th scope="col">nsfm</th>
+      <th scope="col">persistent</th>
+      <th scope="col">protocol</th>
+      <th scope="col">size</th>
+      <th scope="col">startTime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let instance of sessions;let i = index" (click)="setClickedRow(i)" [class.active]="i == selectedRow">
+      <!-- <td *ngFor="let key of keys">{{ instance[key] }}</td> -->
+      <td>{{ instance.id }}</td>
+      <td>{{ instance.title }}</td>
+      <td>{{ instance.userCount + '/' + instance.maxUserCount }}</td>
+      <td>{{ instance.alias }}</td>
+      <td>{{ instance.authOnly? '✔️' : '❌' }}</td>
+      <td>{{ instance.closed? '✔️' : '❌' }}</td>
+      <td>{{ instance.founder }}</td>
+      <td>{{ instance.hasPassword? '✔️' : '❌' }}</td>
+      <td>{{ instance.nsfm? '✔️' : '❌' }}</td>
+      <td>{{ instance.persistent? '✔️' : '❌' }}</td>
+      <td>{{ instance.protocol }}</td>
+      <td>{{ instance.size }}</td>
+      <td>{{ instance.startTime }}</td>
+    </tr>
+<!-- 
+    <td>{{instance.username}}</td>
+    <td>{{ instance.locked? '✔️' : '❌' }}</td>
+    <td>{{ instance.flags.includes('HOST')? '✔️' : '❌' }}</td>
+    <td>{{ instance.flags.includes('MOD')? '✔️' : '❌' }}</td> -->
+  </tbody>
+</table>

@@ -1,0 +1,37 @@
+<h3> Accounts</h3>
+
+
+<button type="button" class="btn btn-primary" (click)="this.add()">
+  Add
+</button>
+
+<button type="button" class="btn btn-primary" (click)="this.update()" [disabled]="!hasSelectedRow()">
+  Edit
+</button>
+<button type="button" class="btn btn-danger" (click)="this.delete()" [disabled]="!hasSelectedRow()">
+  Delete
+</button>
+  
+<ng-container *ngIf="hasSelectedRow()"> Username:
+  <strong>{{items[selectedRow].username}}</strong>
+</ng-container>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">username</th>
+      <th scope="col">locked</th>
+      <th scope="col">host</th>
+      <th scope="col">mod</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let instance of items;let i = index" (click)="this.setClickedRow(i)" [class.active]="i == selectedRow">
+
+      <td>{{instance.username}}</td>
+      <td>{{ instance.locked? '✔️' : '❌' }}</td>
+      <td>{{ instance.flags.includes('HOST')? '✔️' : '❌' }}</td>
+      <td>{{ instance.flags.includes('MOD')? '✔️' : '❌' }}</td>
+    </tr>
+  </tbody>
+</table>

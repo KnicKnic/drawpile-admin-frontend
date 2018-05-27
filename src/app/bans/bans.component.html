@@ -1,0 +1,25 @@
+
+<h3> Bans </h3>
+
+<button type="button" class="btn btn-primary" (click)="this.add()">
+  Add
+</button>
+
+<button type="button" class="btn btn-danger" (click)="this.delete()" [disabled]="!hasSelectedRow()">
+  Delete
+</button>
+<ng-container *ngIf="hasSelectedRow()"> 
+  Selected id: <strong>{{selectedItem().id}}</strong>, ip: <strong>{{selectedItem().ip}}</strong>
+</ng-container>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col" *ngFor="let key of keys">{{ key }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let instance of items;let i = index" (click)="setClickedRow(i)"  [class.active]="i == selectedRow">
+        <td *ngFor="let key of keys">{{ instance[key] }}</td>
+      </tr>
+    </tbody>
+  </table>

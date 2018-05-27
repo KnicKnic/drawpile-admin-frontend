@@ -1,0 +1,27 @@
+<!-- launch chrome with no security
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir c:\tmp\chrome -->
+
+<!-- or you could use a cors stripping container instead see https://github.com/imjacobclark/cors-container
+docker run -p "9991:3000" imjacobclark/cors-container -->
+
+<!-- run the UI in / and run the drawpile_server_admin in /rpc/
+docker run --rm --platform=linux -it -p "9999:80" -v C:\tmp\delete\4\traefik.toml:/traefik.toml traefik -->
+
+<!-- <app-rest-input></app-rest-input> -->
+<div>
+  <nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+
+    <a class="navbar-brand" href="">Drawpile</a>
+    <a routerLink="/accounts">accounts</a>
+    <a routerLink="/bans">bans</a>
+    <a routerLink="/logs">logs</a>
+    <a routerLink="/server">server</a>
+    <a routerLink="/sessions">sessions</a>
+    <a routerLink="/status">status</a>
+    <a routerLink="/users">users</a>
+  </nav>
+
+  <div class="margin5per">
+    <router-outlet></router-outlet>
+  </div>
+</div>

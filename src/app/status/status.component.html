@@ -1,0 +1,8 @@
+<h3> status </h3>
+<ul *ngIf="status">
+  <li *ngFor="let key of keys">{{ key }}: {{status[key]}}</li>
+  <!-- <li>started: {{ status.started }} </li>
+  <li>sessions: {{ status.sessions }} </li>
+  <li>maxSessions: {{ status.maxSessions }} </li>
+  <li>users: {{ status.users }} </li> -->
+</ul>

@@ -1,0 +1,4 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css');
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';

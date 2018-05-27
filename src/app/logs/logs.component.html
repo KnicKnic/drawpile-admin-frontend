@@ -1,0 +1,13 @@
+<h3> Logs </h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col" *ngFor="let key of keys">{{ key }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let instance of logs">
+      <td *ngFor="let key of keys">{{ instance[key] }}</td>
+    </tr>
+  </tbody>
+</table>

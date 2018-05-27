@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Ban user</h2>
+<mat-dialog-content>
+
+        <table>
+        <tbody>
+                <tr>
+                        <td align="left">Address:</td>
+                        <td align="left"> <input [(ngModel)]="ip"></td>
+                </tr>
+                <tr>
+                        <td align="left">Subnet mask:</td>
+                        <td align="left"><input [(ngModel)]="subnet" placeholder="Single address only"></td>
+                </tr>
+                <tr>
+                        <td align="left">Expiration:</td>
+                        <td align="left">{{expireDate}}</td>
+                </tr>
+                <tr>
+                        <td align="left">Comment:</td>
+                        <td align="left"><textarea class="form-control" rows="5" id="comment" [(ngModel)]="this.comment"></textarea></td>
+                </tr>
+                </tbody>
+        </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+        <div>
+                <button mat-button mat-dialog-close type="button" class="btn btn-primary">No</button>
+                <button mat-button (click)="this.add()" type="button" class="btn btn-success">Yes</button>
+        </div>
+</mat-dialog-actions>

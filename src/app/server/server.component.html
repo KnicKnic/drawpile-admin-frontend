@@ -1,0 +1,92 @@
+
+<h3> server </h3>
+
+<table *ngIf="server">
+    <tbody>
+        <tr>
+                <td align="right">Server Title:</td>
+                <td align="left" ><input type="text" [(ngModel)]="server.serverTitle" /></td>
+        </tr>
+        <tr>
+                <td align="right">Connection timeout:</td>
+                <td align="left"><input type="number" step=".5" [(ngModel)]="clientTimeout"/>min</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]=" server.allowGuests"/> Allow unauthenticated users</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]="server.allowGuestHosts"/> Allow anyone to host sessions</td>
+        </tr>
+        <tr>
+                <td align="right">Server log:</td>
+                <td align="left"><input type="number" disabled="true" [(ngModel)]="server.logpurgedays"/>days to keep (0 = disabled)</td>
+        </tr>
+        <tr>
+                <td align="right">Session size limit:</td>
+                <td align="left"><input type="number" step="1" [(ngModel)]="sessionSizeLimit"/>MB</td>
+        </tr>
+        <tr>
+                <td align="right">Session idle timeout:</td>
+                <td align="left"><input type="number" step="1" [(ngModel)]="idleTimeLimit"/>min</td>
+        </tr>
+        <tr>
+                <td align="right">Maximum sesions:</td>
+                <td align="left"><input type="number" step="1" [(ngModel)]="server.sessionCountLimit"/></td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox"  [(ngModel)]="server.persistence"/> Allow sessions to persist without users</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]="server.archive"/> Archive terminated sessions</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]="server.privateUserList"/> Do not include user list in session announcement</td>
+        </tr>
+        <tr>
+                <td align="right">External authentication:</td>
+                <td align="left"><input type="checkbox" [(ngModel)]="server.extauth"/> Enable</td>
+        </tr>
+        <tr>
+                <td align="right">Validation key:</td>
+                <td align="left"><input type="text" [(ngModel)]="server.extauthkey"/></td>
+        </tr>
+        <tr>
+                <td align="right">User group:</td>
+                <td align="left"><input type="text" [(ngModel)]="server.extauthgroup"/></td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"> <input type="checkbox" [(ngModel)]="server.extauthfallback"/> Permit guest logins when ext-auth server is unreachable</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"> <input type="checkbox" [(ngModel)]="server.extauthmod"/> Allow ext-auth moderators</td>
+        </tr>
+        <tr>
+                <td align="right">reporttoken:</td>
+                <td align="left"><input type="text" disabled="true" [(ngModel)]="server.reporttoken" /></td>
+        </tr>
+        <tr>
+                <td align="right">welcomeMessage:</td>
+                <td align="left"><input type="text" [(ngModel)]="server.welcomeMessage" /></td>
+        </tr>
+        <tr>
+                <td align="right">announceWhitelist:</td>
+                <td align="left"><input type="checkbox" [(ngModel)]="server.announceWhitelist"/></td>
+        </tr>
+        <tr>
+                <td></td>
+                <td>
+                        <button type="button" class="btn btn-primary" (click)="this.update()" [disabled]="!hasModifications()">
+                                Update
+                        </button>
+                </td>
+        </tr>
+    </tbody>
+</table>
+

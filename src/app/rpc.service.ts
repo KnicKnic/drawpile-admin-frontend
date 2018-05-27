@@ -1,0 +1,300 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import 'toastr';
+import { Observable } from 'rxjs';
+declare var toastr: any;
+
+export interface AccountMessage {
+  id: Number;
+  username: string;
+  locked: Boolean;
+  flags: string;
+};
+
+export interface BanMessage {
+  id: Number,
+  ip: string,
+  subnet: Number,
+  expires: string,
+  comment: string,
+  added: string,
+};
+
+export interface LogMessage {
+  timestamp: string,
+  level: string,
+  topic: string,
+  session: string,
+  user: string,
+  message: string,
+};
+
+export interface ServerMessage {
+  clientTimeout: Number,
+  sessionSizeLimit: Number,
+  sessionCountLimit: Number,
+  persistence: Boolean,
+  allowGuestHosts: Boolean,
+  idleTimeLimit: Number,
+  serverTitle: string,
+  welcomeMessage: string,
+  announceWhitelist: Boolean,
+  privateUserList: Boolean,
+  allowGuests: Boolean,
+  archive: Boolean,
+  extauth: Boolean,
+  extauthkey: string,
+  extauthgroup: string,
+  extauthfallback: Boolean,
+  extauthmod: Boolean,
+  reporttoken: string,
+  logpurgedays: Number,
+};
+
+export interface SessionMessage {
+  alias: string,
+  authOnly: Boolean,
+  closed: Boolean,
+  founder: string,
+  hasPassword: Boolean,
+  id: string,
+  maxUserCount: Number,
+  nsfm: Boolean,
+  persistent: Boolean,
+  protocol: string,
+  size: Number,
+  startTime: string,
+  title: string,
+  userCount: Number,
+};
+
+
+export interface StatusMessage {
+  started: string,
+  sessions: Number,
+  maxSessions: Number,
+  users: Number,
+};
+
+export interface UserMessage {
+  auth: Boolean,
+  id: Number,
+  ip: string,
+  mod: Boolean,
+  muted: Boolean,
+  name: string,
+  op: Boolean,
+  tls: Boolean
+};
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RpcService {
+  constructor(private http: HttpClient) {
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": false,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+  }
+  getAccountKeys() {
+    return [
+      "id",
+      "username",
+      "locked",
+      "flags",
+    ];
+  }
+  getBanKeys() {
+    return [
+      "id",
+      "ip",
+      "subnet",
+      "expires",
+      "comment",
+      "added",
+    ];
+  }
+  getLogKeys() {
+    return [
+      "timestamp",
+      "level",
+      "topic",
+      "session",
+      "user",
+      "message",
+    ];
+  }
+  getServerKeys() {
+    return [
+      "clientTimeout",
+      "sessionSizeLimit",
+      "sessionCountLimit",
+      "persistence",
+      "allowGuestHosts",
+      "idleTimeLimit",
+      "serverTitle",
+      "welcomeMessage",
+      "announceWhitelist",
+      "privateUserList",
+      "allowGuests",
+      "archive",
+      "extauth",
+      "extauthkey",
+      "extauthgroup",
+      "extauthfallback",
+      "extauthmod",
+      "reporttoken",
+      "logpurgedays",
+    ];
+  }
+  getSessionKeys() {
+    return [
+      "alias",
+      "authOnly",
+      "closed",
+      "founder",
+      "hasPassword",
+      "id",
+      "maxUserCount",
+      "nsfm",
+      "persistent",
+      "protocol",
+      "size",
+      "startTime",
+      "title",
+      "userCount",
+    ];
+  }
+  getStatusKeys() {
+    return [
+      "started",
+      "sessions",
+      "maxSessions",
+      "users",
+    ];
+  }
+  getUserKeys() {
+    return [
+      "auth",
+      "id",
+      "ip",
+      "mod",
+      "muted",
+      "name",
+      "op",
+      "tls",
+    ];
+  }
+
+  getErrorText(error)
+  {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      return '[ ' + error.error.message + ' ]';
+    } else {
+      return '[ code : ' + error.status + ', body: ' + JSON.stringify(error.error) + ' ]';
+    }
+  }
+
+  completeRequests<T>(request: Observable<T>, callback: (isSuccess: Boolean) => void, action: string, success?: string)
+  {
+    request.subscribe(
+      (data: T) => {
+        callback(true);
+        if(success)
+        {
+          toastr["success"](success);
+        }
+      }, // success path
+      error => {
+        callback(false);
+        toastr["error"]("Failed to " + action + " url: " + error.url + " with error " + this.getErrorText(error)); // error path
+      }
+    );
+  }
+
+  makeRpcCreateCall<T>(callback: (isSuccess: Boolean) => void, url: string, body: any, success?: string) {
+    this.completeRequests(this.http.post<T>(url,body),callback, 'post', success)
+  }
+  makeRpcUpdateCall<T>(callback: (isSuccess: Boolean) => void, url: string, body: any, success?: string) {
+    this.completeRequests(this.http.put<T>(url,body),callback, 'post', success)
+  }
+
+  makeRpcDeleteCall<T>(callback: (isSuccess: Boolean) => void, url: string, success?: string) {
+    this.completeRequests(this.http.delete<T>(url),callback, 'post', success)
+  }
+
+  makeRpcGetCall<T>(successCallback: (message: T) => void, url: string) {
+    let request = this.http.get<T>(url).subscribe(
+      (data: T) => {
+        successCallback(data);
+        //toastr["success"](url);
+      },
+      error => toastr["error"]("Failed to get url: " + url + " with error " + this.getErrorText(error)) // error path
+    );
+  }
+
+  getBans(successCallback: (message: BanMessage[]) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/banlist');
+  }  
+  
+  addBan(callback: (isSuccess: Boolean) => void, ban: any){
+    this.makeRpcCreateCall(callback, 'rpc/banlist', ban, "Added ban: " + ban.ip);
+  }
+
+  deleteBan(callback: (isSuccess: Boolean) => void, ban){
+    let url = 'rpc/banlist/' + ban.id;
+    this.makeRpcDeleteCall(callback, url, 'Removed ban: ' + ban.ip);
+  }
+
+  getAccounts(successCallback: (message: AccountMessage[]) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/accounts');
+  }
+  
+  addAccount(callback: (isSuccess: Boolean) => void, account: any){
+    this.makeRpcCreateCall(callback, 'rpc/accounts', account, "Created account: " + account.username);
+  }
+  
+  updateAccount(callback: (isSuccess: Boolean) => void, account: any){
+    this.makeRpcUpdateCall(callback, 'rpc/accounts/' + account.id, account, "Updated account: " + account.username);
+  }
+
+  deleteAccount(callback: (isSuccess: Boolean) => void, account){
+    let url = 'rpc/accounts/' + account.id;
+    this.makeRpcDeleteCall(callback, url, 'deleted account ' + account.username);
+  }
+
+  getLogs(successCallback: (message: LogMessage[]) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/log');
+  }
+  getServer(successCallback: (message: ServerMessage) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/server');
+  }
+  updateServer(callback: (isSuccess: Boolean) => void, server: any){
+    this.makeRpcUpdateCall(callback, 'rpc/server' , server, "Updated server");
+  }
+  getSessions(successCallback: (message: SessionMessage[]) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/sessions');
+  }
+  getStatus(successCallback: (message: StatusMessage) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/status');
+  }
+  getUsers(successCallback: (message: UserMessage[]) => void) {
+    this.makeRpcGetCall(successCallback, 'rpc/users');
+  }
+}
