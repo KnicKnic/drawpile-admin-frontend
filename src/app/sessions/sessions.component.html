@@ -4,17 +4,10 @@
 <button type="button" class="btn btn-primary" (click)="this.messageAll()">
   Message all
 </button>
-
-<ng-container *ngIf="selectedRow !== null">
-  To edit id:
-  <strong>{{sessions[selectedRow].id}}</strong>, title:
-  <strong>{{sessions[selectedRow].title}}</strong> click here.
-</ng-container>
 </div>
 <table class="table table-hover">
   <thead>
     <tr>
-      <!-- <th scope="col" *ngFor="let key of keys">{{ key }}</th> -->
       <th scope="col">id</th>
       <th scope="col">title</th>
       <th scope="col">users</th>
@@ -31,9 +24,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let instance of sessions;let i = index" (click)="setClickedRow(i)" [class.active]="i == selectedRow">
-      <!-- <td *ngFor="let key of keys">{{ instance[key] }}</td> -->
-      <td>{{ instance.id }}</td>
+    <tr *ngFor="let instance of sessions" >
+      <td><a routerLink="/sessions/{{instance.id}}">{{instance.id}}</a></td>
       <td>{{ instance.title }}</td>
       <td>{{ instance.userCount + '/' + instance.maxUserCount }}</td>
       <td>{{ instance.alias }}</td>
@@ -47,10 +39,5 @@
       <td>{{ instance.size }}</td>
       <td>{{ instance.startTime }}</td>
     </tr>
-<!-- 
-    <td>{{instance.username}}</td>
-    <td>{{ instance.locked? '✔️' : '❌' }}</td>
-    <td>{{ instance.flags.includes('HOST')? '✔️' : '❌' }}</td>
-    <td>{{ instance.flags.includes('MOD')? '✔️' : '❌' }}</td> -->
   </tbody>
 </table>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RpcService } from '../rpc.service';
 
 
@@ -8,30 +8,63 @@ import { RpcService } from '../rpc.service';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  users = [];
-  selectedRow: number;
-  setClickedRow: Function;
+  items = [];
   keys = []
+  selectedRow : number;
+  @Input() sessionId = null;
+   //sessionIdParent: string;
 
   constructor(private rpcService: RpcService) {
     this.keys = this.rpcService.getUserKeys();
     this.selectedRow = null;
-    this.setClickedRow = function (index) {
-      if (this.selectedRow == index) {
-        this.selectedRow = null;
-      }
-      else {
-        this.selectedRow = index;
-      }
-    }
   }
 
   refreshData(){
-    this.rpcService.getUsers(data => this.users = data);
-    this.selectedRow = null;
+    let updater = data => {
+      this.items = data;
+      this.selectedRow = null;
+    }
+    if(this.sessionId){
+      this.rpcService.getUsersInSession(updater, this.sessionId);
+    }
+    else{
+      this.rpcService.getUsers(updater);
+    }
   }
+
+  selectedItem(){
+    return this.items[this.selectedRow]
+  }
+
+  setClickedRow(index) {
+    if (this.selectedRow == index) {
+      this.selectedRow = null;
+    }
+    else {
+      this.selectedRow = index;
+    }
+  }
+
+  hasSelectedRow(){
+    return this.selectedRow !== null;
+  }
+
   ngOnInit() {
     this.refreshData();
   }
 
+  message(){
+    let item = this.selectedItem();
+    var messageStr = prompt("Message to send", "");
+    if (messageStr != null) {
+      this.rpcService.messageUser(messageStr, this.sessionId, item.id);
+    }
+  }
+  kick(){
+    let item = this.selectedItem();    
+    if(confirm('Do you want to kick user: ' + item.name))
+    {
+      this.rpcService.kickUser((success)=> success? this.refreshData(): '', this.sessionId, item.id);
+    }    
+  }
 }

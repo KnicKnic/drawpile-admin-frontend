@@ -18,6 +18,7 @@ import { AccountAddComponent } from './account-add/account-add.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { BanAddComponent } from './ban-add/ban-add.component';
+import { SessionComponent } from './session/session.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { BanAddComponent } from './ban-add/ban-add.component';
     StatusComponent,
     RestInputComponent,
     AccountAddComponent,
-    BanAddComponent
+    BanAddComponent,
+    SessionComponent
   ],
   imports: [
     BrowserModule,

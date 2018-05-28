@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import 'toastr';
 import { Observable } from 'rxjs';
@@ -85,16 +86,18 @@ export interface UserMessage {
   muted: Boolean,
   name: string,
   op: Boolean,
-  tls: Boolean
+  tls: Boolean,
+  session: string,
 };
 
 @Injectable({
   providedIn: 'root'
 })
 export class RpcService {
-  baseUrl = 'http://192.168.0.21:9991/http://192.168.0.11:7777/'
-  //baseUrl = 'rpc/'
-  constructor(private http: HttpClient) {
+  //baseUrl = 'http://192.168.0.21:9991/http://192.168.0.11:7777/'
+  baseUrl = 'rpc/'
+  constructor(private http: HttpClient,
+    private router: Router,) {
     toastr.options = {
       "closeButton": true,
       "debug": false,
@@ -252,7 +255,7 @@ export class RpcService {
   }
 
   getBans(successCallback: (message: BanMessage[]) => void) {
-    this.makeRpcGetCall(successCallback, this.baseUrl + this.baseUrl + 'banlist');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'banlist');
   }  
   
   addBan(callback: (isSuccess: Boolean) => void, ban: any){
@@ -290,6 +293,23 @@ export class RpcService {
   updateServer(callback: (isSuccess: Boolean) => void, server: any){
     this.makeRpcUpdateCall(callback, this.baseUrl + 'server' , server, "Updated server");
   }
+  deleteSession(id: String){
+    let url = this.baseUrl + 'sessions/' + id;
+    this.makeRpcDeleteCall((isSuccess: Boolean) => {
+      if(isSuccess){
+        this.router.navigateByUrl('sessions')
+      }
+    }, url, 'Terminated session: ' + id);
+  }
+  getSession(successCallback: (message: SessionMessage) => void, id: string) {
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'sessions/' + id);
+  }
+  messageSession(message: String, id: String) {    
+    this.makeRpcUpdateCall((isSuccess) => {}, this.baseUrl + 'sessions/' + id, {"message": message}, "Sent message");
+  }
+  updateSession(callback: (isSuccess: Boolean) => void, session: any, sessionId: string){
+    this.makeRpcUpdateCall(callback, this.baseUrl + 'sessions/' + sessionId , session, "Updated session " + sessionId);
+  }
   getSessions(successCallback: (message: SessionMessage[]) => void) {
     this.makeRpcGetCall(successCallback, this.baseUrl + 'sessions');
   }
@@ -301,5 +321,15 @@ export class RpcService {
   }
   getUsers(successCallback: (message: UserMessage[]) => void) {
     this.makeRpcGetCall(successCallback, this.baseUrl + 'users');
+  }
+  getUsersInSession(successCallback: (message: UserMessage[]) => void, session: string) {
+    this.makeRpcGetCall((data: any)=> successCallback(data.users), this.baseUrl + 'sessions/' + session);
+  }
+  kickUser(callback: (isSuccess: Boolean) => void, sessionId: String, userId: string) {    
+    let url = this.baseUrl + 'sessions/' + sessionId + '/' + userId;
+    this.makeRpcDeleteCall(callback, url, 'kicked user: ' + userId);
+  }
+  messageUser(message: String, sessionId: String, userId: string) {    
+    this.makeRpcUpdateCall((isSuccess) => {}, this.baseUrl + 'sessions/' + sessionId + '/' + userId, {"message": message}, "Sent message");
   }
 }

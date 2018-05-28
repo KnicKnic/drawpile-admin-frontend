@@ -9,26 +9,30 @@ import { RpcService } from '../rpc.service';
 })
 export class SessionsComponent implements OnInit {
   sessions = [];
-  selectedRow : number;
-  setClickedRow : Function;
   keys = [  ]
 
   constructor(private rpcService: RpcService){
     this.keys = this.rpcService.getSessionKeys();
-    this.selectedRow = null;
-    this.setClickedRow = function (index) {
-      if (this.selectedRow == index) {
-        this.selectedRow = null;
-      }
-      else {
-        this.selectedRow = index;
-      }
+  }
+
+  formatTime(zuluTime: string){
+    let zuluDateTime = new Date(zuluTime);
+    if(!zuluTime.includes('GMT') && !zuluTime.includes('Z') )
+    {
+      let zuluDateTime = new Date(zuluTime+ " GMT");
     }
+    return zuluDateTime.toLocaleDateString() + " " + zuluDateTime.toLocaleTimeString();
   }
 
   refreshData(){
-    this.rpcService.getSessions(data => this.sessions = data);
-    this.selectedRow = null;
+    this.rpcService.getSessions(data => {
+      this.sessions = data;
+      
+      for(let session of this.sessions)
+      {
+        session.startTime = this.formatTime(session.startTime);
+      }
+    });
   }
   ngOnInit() {
     this.refreshData();

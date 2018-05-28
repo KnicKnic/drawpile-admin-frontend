@@ -1,0 +1,67 @@
+<h3> Session Info </h3>
+
+<table *ngIf="session">
+    <tbody>
+        <tr>
+                <td align="right">ID:</td>
+                <td align="left" >{{ session.id }}</td>
+        </tr>
+        <tr>
+                <td align="right">Alias:</td>
+                <td align="left">{{ session.alias }}</td>
+        </tr>
+        <tr>
+                <td align="right">Title:</td>
+                <td align="left"><input type="text" [(ngModel)]="session.title" /></td>
+        </tr>
+        <tr>
+                <td align="right">Started:</td>
+                <td align="left">{{ session.startTime }}</td>
+        </tr>
+        <tr>
+                <td align="right">Protocol version:</td>
+                <td align="left">{{ session.protocol }}</td>
+        </tr>
+        <tr>
+                <td align="right">Started by:</td>
+                <td align="left">{{ session.founder }}</td>
+        </tr>
+        <tr>
+                <td align="right">Password protected:</td>
+                <td align="left"><input type="checkbox" [(ngModel)]="session.hasPassword"/> <input type="text" [disabled]='!session.hasPassword' [(ngModel)]="session.password" /></td>
+        </tr>
+        <tr>
+                <td align="right">Size:</td>
+                <td align="left">{{ session.size }}</td>
+        </tr>
+        <tr>
+                <td align="right">Maximum users:</td>
+                <td align="left"><input type="number" step="1" [(ngModel)]="session.maxUserCount"/></td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]="session.closed"/> Closed</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]="session.persistent"/> Persistent</td>
+        </tr>
+        <tr>
+                <td align="right"></td>
+                <td align="left"><input type="checkbox" [(ngModel)]="session.nsfm"/> NSFM</td>
+        </tr>        
+    </tbody>
+</table>
+<div>          
+  <button type="button" class="btn btn-danger" (click)="this.delete()">
+    Terminate
+  </button>
+<button type="button" class="btn btn-primary" (click)="this.messageAll()">
+Message all
+</button>
+<button type="button" class="btn btn-primary"  (click)="this.update()" [disabled]="!hasModifications()">
+Update
+</button>
+</div>
+<app-users [sessionId]="id"></app-users>
+
