@@ -92,6 +92,8 @@ export interface UserMessage {
   providedIn: 'root'
 })
 export class RpcService {
+  baseUrl = 'http://192.168.0.21:9991/http://192.168.0.11:7777/'
+  //baseUrl = 'rpc/'
   constructor(private http: HttpClient) {
     toastr.options = {
       "closeButton": true,
@@ -250,54 +252,54 @@ export class RpcService {
   }
 
   getBans(successCallback: (message: BanMessage[]) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/banlist');
+    this.makeRpcGetCall(successCallback, this.baseUrl + this.baseUrl + 'banlist');
   }  
   
   addBan(callback: (isSuccess: Boolean) => void, ban: any){
-    this.makeRpcCreateCall(callback, 'rpc/banlist', ban, "Added ban: " + ban.ip);
+    this.makeRpcCreateCall(callback, this.baseUrl + 'banlist', ban, "Added ban: " + ban.ip);
   }
 
   deleteBan(callback: (isSuccess: Boolean) => void, ban){
-    let url = 'rpc/banlist/' + ban.id;
+    let url = this.baseUrl + 'banlist/' + ban.id;
     this.makeRpcDeleteCall(callback, url, 'Removed ban: ' + ban.ip);
   }
 
   getAccounts(successCallback: (message: AccountMessage[]) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/accounts');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'accounts');
   }
   
   addAccount(callback: (isSuccess: Boolean) => void, account: any){
-    this.makeRpcCreateCall(callback, 'rpc/accounts', account, "Created account: " + account.username);
+    this.makeRpcCreateCall(callback, this.baseUrl + 'accounts', account, "Created account: " + account.username);
   }
   
   updateAccount(callback: (isSuccess: Boolean) => void, account: any){
-    this.makeRpcUpdateCall(callback, 'rpc/accounts/' + account.id, account, "Updated account: " + account.username);
+    this.makeRpcUpdateCall(callback, this.baseUrl + 'accounts/' + account.id, account, "Updated account: " + account.username);
   }
 
   deleteAccount(callback: (isSuccess: Boolean) => void, account){
-    let url = 'rpc/accounts/' + account.id;
+    let url = this.baseUrl + 'accounts/' + account.id;
     this.makeRpcDeleteCall(callback, url, 'deleted account ' + account.username);
   }
 
   getLogs(successCallback: (message: LogMessage[]) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/log');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'log');
   }
   getServer(successCallback: (message: ServerMessage) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/server');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'server');
   }
   updateServer(callback: (isSuccess: Boolean) => void, server: any){
-    this.makeRpcUpdateCall(callback, 'rpc/server' , server, "Updated server");
+    this.makeRpcUpdateCall(callback, this.baseUrl + 'server' , server, "Updated server");
   }
   getSessions(successCallback: (message: SessionMessage[]) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/sessions');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'sessions');
   }
   messageSessions(message: String) {    
-    this.makeRpcUpdateCall((isSuccess) => {}, 'rpc/sessions', {"message": message}, "Sent message");
+    this.makeRpcUpdateCall((isSuccess) => {}, this.baseUrl + 'sessions', {"message": message}, "Sent message");
   }
   getStatus(successCallback: (message: StatusMessage) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/status');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'status');
   }
   getUsers(successCallback: (message: UserMessage[]) => void) {
-    this.makeRpcGetCall(successCallback, 'rpc/users');
+    this.makeRpcGetCall(successCallback, this.baseUrl + 'users');
   }
 }
