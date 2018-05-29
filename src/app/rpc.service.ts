@@ -26,8 +26,8 @@ export interface LogMessage {
   timestamp: string,
   level: string,
   topic: string,
-  session: string,
-  user: string,
+  session?: string,
+  user?: string,
   message: string,
 };
 
@@ -49,8 +49,8 @@ export interface ServerMessage {
   extauthgroup: string,
   extauthfallback: Boolean,
   extauthmod: Boolean,
-  reporttoken: string,
-  logpurgedays: Number,
+  reporttoken?: string,
+  logpurgedays?: Number,
 };
 
 export interface SessionMessage {
@@ -87,7 +87,7 @@ export interface UserMessage {
   name: string,
   op: Boolean,
   tls: Boolean,
-  session: string,
+  session?: string,
 };
 
 @Injectable({
@@ -332,4 +332,386 @@ export class RpcService {
   messageUser(message: String, sessionId: String, userId: string) {    
     this.makeRpcUpdateCall((isSuccess) => {}, this.baseUrl + 'sessions/' + sessionId + '/' + userId, {"message": message}, "Sent message");
   }
+
+
+  /* // Below is a massive chunk of code that lets users test the UI without actually Running the browser
+  bans: BanMessage[] = [
+    {
+        "added": "2018-05-26 22:22:50",
+        "comment": "added 5/26/2018 3:22 \nexpire 5/27/2018 3:22 ",
+        "expires": "2018-05-27 15:22:19",
+        "id": 2,
+        "ip": "192.168.99.100",
+        "subnet": 0
+    },
+    {
+        "added": "2018-05-27 05:05:10",
+        "comment": "asdf",
+        "expires": "2018-05-28 05:05:03",
+        "id": 3,
+        "ip": "192.168.99.101",
+        "subnet": 0
+    },
+    {
+        "added": "2018-05-27 07:45:58",
+        "comment": "",
+        "expires": "2018-05-28 07:45:52",
+        "id": 4,
+        "ip": "192.168.99.102",
+        "subnet": 0
+    }
+];
+  accounts: AccountMessage[] = [
+    {
+        "flags": "HOST,MOD",
+        "id": 1,
+        "locked": false,
+        "username": "beta1042"
+    },
+    {
+        "flags": "HOST,MOD",
+        "id": 3,
+        "locked": false,
+        "username": "zero"
+    },
+    {
+        "flags": "HOST,MOD",
+        "id": 4,
+        "locked": false,
+        "username": "knic"
+    },
+    {
+        "flags": "MOD,HOST",
+        "id": 25,
+        "locked": false,
+        "username": "soap"
+    },
+    {
+        "flags": "",
+        "id": 27,
+        "locked": false,
+        "username": "asdf"
+    }
+];
+  logs: LogMessage[] = [
+    {
+        "level": "Info",
+        "message": "New client connected",
+        "timestamp": "2018-05-29T04:27:44Z",
+        "topic": "Status",
+        "user": "0;1.23.45.123;"
+    },
+    {
+        "level": "Debug",
+        "message": "init-complete",
+        "session": "{68ee60d1-752f-4082-95bc-1427888dad3f}",
+        "timestamp": "2018-05-29T03:55:01Z",
+        "topic": "Status",
+        "user": "1;1.23.45.123;knic"
+    },
+    {
+        "level": "Info",
+        "message": "Changed title, changed max. user count",
+        "session": "{68ee60d1-752f-4082-95bc-1427888dad3f}",
+        "timestamp": "2018-05-29T03:55:01Z",
+        "topic": "Status",
+        "user": "1;1.23.45.123;knic"
+    },
+    {
+        "level": "Info",
+        "message": "Joined session",
+        "session": "{68ee60d1-752f-4082-95bc-1427888dad3f}",
+        "timestamp": "2018-05-29T03:55:01Z",
+        "topic": "Join",
+        "user": "1;1.23.45.123;knic"
+    },
+    {
+        "level": "Info",
+        "message": "Session created by knic",
+        "session": "{68ee60d1-752f-4082-95bc-1427888dad3f}",
+        "timestamp": "2018-05-29T03:55:01Z",
+        "topic": "Status"
+    },
+    {
+        "level": "Info",
+        "message": "New client connected",
+        "timestamp": "2018-05-29T03:55:00Z",
+        "topic": "Status",
+        "user": "0;1.23.45.123;"
+    }
+];
+  server: ServerMessage = {
+    "allowGuestHosts": true,
+    "allowGuests": true,
+    "announceWhitelist": false,
+    "archive": true,
+    "clientTimeout": 120,
+    "extauth": false,
+    "extauthfallback": true,
+    "extauthgroup": "",
+    "extauthkey": "",
+    "extauthmod": true,
+    "idleTimeLimit": 300000,
+    "persistence": true,
+    "privateUserList": false,
+    "serverTitle": "Welcome to Beta1042's house!!!",
+    "sessionCountLimit": 25,
+    "sessionSizeLimit": 92274688,
+    "welcomeMessage": ""
+};
+  sessions: SessionMessage[] = [
+    {
+        "alias": "",
+        "authOnly": false,
+        "closed": false,
+        "founder": "beta1042",
+        "hasPassword": true,
+        "id": "0f44ebf9-e262-4ba5-8402-2d615d3c5848",
+        "maxUserCount": 20,
+        "nsfm": false,
+        "persistent": true,
+        "protocol": "dp:4.20.1",
+        "size": 12111547,
+        "startTime": "2018-05-23T06:19:02Z",
+        "title": "tapas",
+        "userCount": 0
+    },
+    {
+        "alias": "",
+        "authOnly": false,
+        "closed": false,
+        "founder": "beta1042",
+        "hasPassword": true,
+        "id": "d033155f-c7ba-4caa-a472-8d77f7312862",
+        "maxUserCount": 20,
+        "nsfm": false,
+        "persistent": true,
+        "protocol": "dp:4.20.1",
+        "size": 10944071,
+        "startTime": "2018-05-20T07:31:31Z",
+        "title": "tapas2",
+        "userCount": 0
+    },
+    {
+        "alias": "",
+        "authOnly": false,
+        "closed": false,
+        "founder": "beta1042",
+        "hasPassword": true,
+        "id": "16b081f1-ee4c-46a7-8c07-19d9f8a0d092",
+        "maxUserCount": 20,
+        "nsfm": false,
+        "persistent": true,
+        "protocol": "dp:4.20.1",
+        "size": 6026299,
+        "startTime": "2018-05-28T06:48:06Z",
+        "title": "Fun",
+        "userCount": 0
+    },
+    {
+        "alias": "",
+        "authOnly": false,
+        "closed": false,
+        "founder": "knic",
+        "hasPassword": false,
+        "id": "68ee60d1-752f-4082-95bc-1427888dad3f",
+        "maxUserCount": 20,
+        "nsfm": false,
+        "persistent": false,
+        "protocol": "dp:4.20.1",
+        "size": 45227,
+        "startTime": "2018-05-29T03:55:01Z",
+        "title": "draw",
+        "userCount": 1
+    }
+]
+;
+  status: StatusMessage = {
+    "maxSessions": 25,
+    "sessions": 4,
+    "started": "2018-03-15 05:19:27",
+    "users": 2
+};
+  users: UserMessage[] = [
+    {
+        "auth": true,
+        "id": 0,
+        "ip": "1.23.45.123",
+        "mod": true,
+        "muted": false,
+        "name": "knic",
+        "op": true,
+        "tls": true
+    },
+    {
+        "auth": true,
+        "id": 1,
+        "ip": "1.23.45.123",
+        "mod": true,
+        "muted": false,
+        "name": "knic",
+        "op": true,
+        "session": "68ee60d1-752f-4082-95bc-1427888dad3f",
+        "tls": true
+    }
+];
+
+
+generateId(objects: any[]){
+  let maxId = 1;
+  for(let object of objects)
+  {
+    maxId = object.id > maxId? object.id : maxId;
+  }
+  return maxId + 1
+}
+
+insertWithGeneratedId<T>(objects: T[], newObject: any)
+{
+  let newObjectCopy = Object.assign({}, newObject);   
+  newObjectCopy['id'] = this.generateId(objects);
+  objects.push(newObjectCopy)
+}
+
+deleteById<T>(objects:T[], id)
+{
+  for(var i = objects.length - 1; i >= 0; i--) {
+    if(objects[i]['id'] == id) {
+      objects.splice(i, 1);
+      return;
+    }
+  }
+}
+
+getItemById<T>(objects: T[], id)
+{
+  for(let object of objects)
+  {
+    if(object['id'] == id)
+    {
+      return object;
+    }
+  }
+}
+
+updateAllFields(src:any, dest: any)
+{
+  for(var x in src)
+  {
+    dest[x] = src[x];
+  }
+}
+
+  copy<T>(obj:T)
+  {
+    return Object.assign({}, obj); 
+  }
+  copyArr<T>(objs:T[])
+  {
+    let objsCopy = []
+    for(let obj of objs){
+      objsCopy.push(this.copy(obj))
+    }
+    return objsCopy;
+  }
+
+  getBans(successCallback: (message: BanMessage[]) => void) {
+    successCallback(this.copyArr(this.bans));
+  }  
+
+  addBan(callback: (isSuccess: Boolean) => void, ban: any){
+    toastr["success"]("Added ban: " + ban.ip);
+    this.insertWithGeneratedId(this.bans, ban);
+    callback(true);
+  }
+
+  deleteBan(callback: (isSuccess: Boolean) => void, ban){
+    this.deleteById(this.bans, ban.id);
+    toastr["success"]('Removed ban: ' + ban.ip);
+    callback(true);
+  }
+
+  getAccounts(successCallback: (message: AccountMessage[]) => void) {
+    successCallback(this.copyArr(this.accounts));
+  }
+  
+  addAccount(callback: (isSuccess: Boolean) => void, account: any){
+    toastr["success"]("Added ban: " + account.name);
+    this.insertWithGeneratedId(this.accounts, account);
+    callback(true);
+  }
+  
+  updateAccount(callback: (isSuccess: Boolean) => void, account: any){
+    this.updateAllFields(account, this.getItemById(this.accounts, account.id));
+    toastr["success"]("Updated account: " + account.username);
+    callback(true);
+  }
+
+  deleteAccount(callback: (isSuccess: Boolean) => void, account){
+    this.deleteById(this.accounts, account.id);
+    toastr["success"]('deleted account ' + account.username);
+    callback(true);
+  }
+
+  getLogs(successCallback: (message: LogMessage[]) => void) {
+    successCallback(this.copyArr(this.logs));
+  }
+  getServer(successCallback: (message: ServerMessage) => void) {
+    successCallback(this.copy(this.server));
+  }
+  updateServer(callback: (isSuccess: Boolean) => void, server: any){
+    this.updateAllFields(server, this.server);
+    toastr["success"]('Updated server');
+  }
+  deleteSession(id: String){
+    this.deleteById(this.sessions, id);
+    toastr["success"]('Terminated session ' + id);
+    this.router.navigateByUrl('sessions');
+  }
+  getSession(successCallback: (message: SessionMessage) => void, id: string) {
+    let session = this.copy(this.getItemById(this.sessions, id));
+    session['users'] = [];
+    for(let user of this.users){
+      if(user.session == session.id)
+      {
+        session['users'].push(this.copy(user))
+      }
+    }
+    successCallback(session);
+  }
+  messageSession(message: String, id: String) {    
+    toastr["success"]( "Sent message");
+  }
+  updateSession(callback: (isSuccess: Boolean) => void, session: any, sessionId: string){
+    this.updateAllFields(session, this.getItemById(this.sessions, sessionId));
+    toastr["success"]("Updated session " + sessionId);
+    callback(true);
+  }
+  getSessions(successCallback: (message: SessionMessage[]) => void) {
+    successCallback(this.copyArr(this.sessions));
+  }
+  messageSessions(message: String) {    
+    toastr["success"]("Sent message");
+  }
+  getStatus(successCallback: (message: StatusMessage) => void) {
+    successCallback(this.copy(this.status));
+  }
+  getUsers(successCallback: (message: UserMessage[]) => void) {
+    successCallback(this.copyArr(this.users));
+  }
+  getUsersInSession(successCallback: (message: UserMessage[]) => void, session: string) {
+    var users = this.users;
+    var callback = (data: any)=> users = data.users;
+    this.getSession(callback, session);
+    successCallback(users);
+  }
+  kickUser(callback: (isSuccess: Boolean) => void, sessionId: String, userId: string) {    
+    this.getItemById(this.users, userId)['session'] = null;
+    toastr["success"]('kicked user: ' + userId);
+    callback(true);
+  }
+  messageUser(message: String, sessionId: String, userId: string) {    
+    toastr["success"]( "Sent message");
+  } */
+
 }
