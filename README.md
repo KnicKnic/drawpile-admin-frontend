@@ -2,6 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
+## Demonstration site
+You can go to https://knicknic.github.io/drawpile-admin-test to test out the website.
+
 ## How to use
 
 The easiest way to use this project is to use the already hosted version at https://knicknic.github.io/drawpile-admin . This page however expects specific naming patterns.
@@ -11,6 +14,17 @@ The easiest way to use this project is to use the already hosted version at http
 I use [traefik](https://traefik.io) to accomplish this redirection. I use [duckdns](https://www.duckdns.org) to have free domains/subdomains (useful if you want to access over the internet). [Traefik](https://traefik.io) has built in plugins to get certificates for https from [letsencrypt](https://letsencrypt.org).
 
 **See example in [./traefik](./traefik)**
+
+## Status
+This was last tested against [Drawpile 2.0.10](https://github.com/drawpile/Drawpile/tree/2.0.10). As of that time it was mostly complete, lacking a few features. 
+* Listing server support in sessions
+* Time to choose ban expiration
+* log purge duration in server
+* HTML display is not pretty
+
+Full list at https://github.com/KnicKnic/drawpile-admin-frontend/projects/1
+
+![Sample picture](sample-pic.jpg)
 
 ## Development server
 
