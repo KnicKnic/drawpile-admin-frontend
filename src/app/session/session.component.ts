@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { RpcService } from '../rpc.service';
+import { FormatTime } from '../utilities';
 
 @Component({
   selector: 'app-session',
@@ -25,20 +26,11 @@ export class SessionComponent implements OnInit {
     this.refreshData();
   }
 
-  formatTime(zuluTime: string){
-    let zuluDateTime = new Date(zuluTime);
-    if(!zuluTime.includes('GMT') && !zuluTime.includes('Z') )
-    {
-      let zuluDateTime = new Date(zuluTime+ " GMT");
-    }
-    return zuluDateTime.toLocaleDateString() + " " + zuluDateTime.toLocaleTimeString();
-  }
-
   refreshData(){
     this.rpcService.getSession(data =>{
       this.session = data;
       this.session['password'] = ''
-      this.session.startTime = this.formatTime(this.session.startTime);
+      this.session.startTime = FormatTime(new Date(this.session.startTime));
       this.sessionNoModify = Object.assign({}, this.session);      
     }, this.id);
   }

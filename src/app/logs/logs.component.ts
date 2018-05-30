@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RpcService } from '../rpc.service';
-
+import { FormatTime } from '../utilities';
 
 
 
@@ -17,21 +17,12 @@ export class LogsComponent implements OnInit {
     this.keys = this.rpcService.getLogKeys();
   }
 
-  formatTime(zuluTime: string){
-    let zuluDateTime = new Date(zuluTime);
-    if(!zuluTime.includes('GMT') && !zuluTime.includes('Z') )
-    {
-      let zuluDateTime = new Date(zuluTime+ " GMT");
-    }
-    return zuluDateTime.toLocaleDateString() + " " + zuluDateTime.toLocaleTimeString();
-  }
-
   ngOnInit() {
     this.rpcService.getLogs(data =>{
       this.logs = data
       for(let log of this.logs)
       {
-        log.timestamp = this.formatTime(log.timestamp);
+        log.timestamp = FormatTime(new Date(log.timestamp));
       }
     } )
   }

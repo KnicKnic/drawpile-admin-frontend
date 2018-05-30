@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RpcService } from '../rpc.service';
+import { FormatTime } from '../utilities';
 
 
 @Component({
@@ -15,14 +16,6 @@ export class SessionsComponent implements OnInit {
     this.keys = this.rpcService.getSessionKeys();
   }
 
-  formatTime(zuluTime: string){
-    let zuluDateTime = new Date(zuluTime);
-    if(!zuluTime.includes('GMT') && !zuluTime.includes('Z') )
-    {
-      let zuluDateTime = new Date(zuluTime+ " GMT");
-    }
-    return zuluDateTime.toLocaleDateString() + " " + zuluDateTime.toLocaleTimeString();
-  }
 
   refreshData(){
     this.rpcService.getSessions(data => {
@@ -30,7 +23,7 @@ export class SessionsComponent implements OnInit {
       
       for(let session of this.sessions)
       {
-        session.startTime = this.formatTime(session.startTime);
+        session.startTime = FormatTime(new Date(session.startTime));
       }
     });
   }
